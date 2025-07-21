@@ -1,0 +1,18 @@
+
+
+/* 3) Celdas de día (números) */
+.calendar-picker .calendar-day-cell {
+    -fx-text-fill: white !important;
+    -fx-background-color: transparent !important;
+}
+
+/* 4) Día seleccionado: fondo verde y texto blanco */
+.calendar-picker .toggle-button:selected {
+    -fx-background-color: #10b981 !important;
+    -fx-text-fill: white !important;
+}
+
+/* 5) Hover opcional */
+.calendar-picker .toggle-button:hover {
+    -fx-background-color: rgba(16,185,129,0.3) !important;
+}

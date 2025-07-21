@@ -1,0 +1,72 @@
+/* Fondo del popup entero */
+.combo-box-popup {
+    -fx-background-color: #1f2937;
+    -fx-background-radius: 8;
+    -fx-border-color: #374151;
+    -fx-border-radius: 8;
+}
+
+/* El ListView dentro del popup */
+.combo-box-popup .list-view {
+    -fx-background-color: #1f2937;
+    -fx-control-inner-background: #1f2937;
+    -fx-padding: 0;
+}
+
+/* Cada celda del listado */
+.combo-box-popup .list-cell {
+    -fx-background-color: #1f2937;
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+}
+
+/* Cuando pasas el ratón por encima */
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #334155;    /* tu hover oscuro */
+    -fx-text-fill: white;
+}
+
+/* ------------------------------
+   List-cell seleccionada en popup
+   ------------------------------ */
+
+/* Background blanco y texto negro */
+.combo-box-popup .list-cell:selected,
+.combo-box-popup .list-cell:filled:selected,
+.combo-box-popup .list-cell:selected:hover {
+    -fx-background-color: white !important;
+    -fx-text-fill: black !important;
+}
+
+/* A veces también ayuda esto */
+.combo-box-popup .list-cell:focused:selected {
+    -fx-background-color: white !important;
+    -fx-text-fill: black !important;
+}
+
+/* Scrollbar del popup */
+.combo-box-popup .scroll-bar {
+    -fx-background-color: #1f2937;
+}
+
+.combo-box-popup .thumb {
+    -fx-background-color: #374151;
+    -fx-background-radius: 4;
+}
+
+/* Texto del prompt o valor seleccionado en el ComboBox */
+.combo-box .button-cell,
+.combo-box .list-cell {
+  -fx-text-fill: white;
+}
+
+/* Cuando está vacío (prompt) */
+.combo-box .button-cell:empty {
+  -fx-text-fill: white;
+}
+
+/* Si tu ComboBox es editable */
+.combo-box .text-field {
+  -fx-prompt-text-fill: white;
+}
+
