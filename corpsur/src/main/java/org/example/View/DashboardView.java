@@ -53,6 +53,7 @@ public class DashboardView {
                 createSidebarButton("Profesionales", FontAwesome.USER_PLUS, () -> content.getChildren().setAll(new ProfessionalView().getView())),
                 createSidebarButton("Laboratorios", FontAwesome.FLASK, () -> content.getChildren().setAll(new LaboratoryView().getView())),
                 createSidebarButton("Profesiones", FontAwesome.GRADUATION_CAP, () -> content.getChildren().setAll(new ProfessionsView().getView())),
+                createSidebarButton("Capacitaciones", FontAwesome.BOOK, () -> content.getChildren().setAll(new TrainingView().getView())),
                 createSidebarButton("Planificar Asistencia", FontAwesome.CALENDAR_CHECK_O, () -> content.getChildren().setAll(new AsistenciasView().getView())),
                 createSidebarButton("Reports", FontAwesome.FILE_TEXT_O, () -> content.getChildren().setAll(new Label("Reports"))),
                 createSidebarButton("Settings", FontAwesome.COG, () -> content.getChildren().setAll(new Label("Settings")))

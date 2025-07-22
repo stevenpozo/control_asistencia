@@ -134,7 +134,4 @@ public class LaboratoryController {
         return deleteStmt.executeUpdate() > 0;
     }
 
-
-
-
 }
