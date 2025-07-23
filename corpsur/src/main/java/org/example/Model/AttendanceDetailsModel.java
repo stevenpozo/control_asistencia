@@ -10,11 +10,11 @@ public class AttendanceDetailsModel {
     private LocalTime lunchOutTime;
     private LocalTime lunchReturnTime;
     private LocalTime finalExitTime;
-    private boolean closed;
+    private int estado; // 1 = abierto, 0 = cerrado
 
     public AttendanceDetailsModel(int id, int eventId, int professionalId, LocalTime entryTime,
                                   LocalTime lunchOutTime, LocalTime lunchReturnTime,
-                                  LocalTime finalExitTime, boolean closed) {
+                                  LocalTime finalExitTime, int estado) {
         this.id = id;
         this.eventId = eventId;
         this.professionalId = professionalId;
@@ -22,7 +22,7 @@ public class AttendanceDetailsModel {
         this.lunchOutTime = lunchOutTime;
         this.lunchReturnTime = lunchReturnTime;
         this.finalExitTime = finalExitTime;
-        this.closed = closed;
+        this.estado = estado;
     }
 
     public AttendanceDetailsModel(int eventId, int professionalId) {
@@ -82,11 +82,11 @@ public class AttendanceDetailsModel {
         this.finalExitTime = finalExitTime;
     }
 
-    public boolean isClosed() {
-        return closed;
+    public int getEstado() {
+        return estado;
     }
 
-    public void setClosed(boolean closed) {
-        this.closed = closed;
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 }

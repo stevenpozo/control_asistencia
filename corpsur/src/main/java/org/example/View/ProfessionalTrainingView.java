@@ -51,7 +51,7 @@ public class ProfessionalTrainingView {
         addButton.setStyle("-fx-background-color: #334155; -fx-background-radius: 8;");
         addButton.setOnAction(e -> {
             AddProfessionalTrainingView.show();
-            refreshTable(); 
+            refreshTable();
         });
 
         Region spacer = new Region();

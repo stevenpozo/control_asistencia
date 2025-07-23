@@ -9,12 +9,12 @@ import java.util.List;
 
 public class AttendanceDetailsController {
 
-    // Verificar si hay eventos activos para una capacitación (cerrado = 0)
+    // Obtener eventos con estado = 1 (abiertos)
     public List<Integer> getActiveEventIdsForTraining(int trainingId) throws SQLException {
         List<Integer> result = new ArrayList<>();
         String sql = """
             SELECT id FROM evento_asistencia
-            WHERE capacitacion_id = ? AND cerrado = 0
+            WHERE capacitacion_id = ? AND estado = 1
         """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -31,11 +31,11 @@ public class AttendanceDetailsController {
         return result;
     }
 
-    // Registrar un nuevo detalle de asistencia (cuando se asigna un doctor a evento)
+    // Insertar detalle vacío al asignar un doctor
     public void insertAttendanceDetail(int eventId, int professionalId) throws SQLException {
         String sql = """
-            INSERT INTO asistencia_detalle (evento_asistencia_id, profesional_id)
-            VALUES (?, ?)
+            INSERT INTO asistencia_detalle (evento_asistencia_id, profesional_id, estado)
+            VALUES (?, ?, 1)
         """;
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -47,10 +47,10 @@ public class AttendanceDetailsController {
         }
     }
 
-    // Obtener el estado de asistencia de un profesional para un evento
+    // Obtener estado textual de asistencia
     public String getAttendanceStatus(int eventId, int professionalId) throws SQLException {
         String sql = """
-            SELECT hora_entrada, hora_salida_almuerzo, hora_regreso_almuerzo, hora_salida_final, cerrado
+            SELECT hora_entrada, hora_salida_almuerzo, hora_regreso_almuerzo, hora_salida_final, estado
             FROM asistencia_detalle
             WHERE evento_asistencia_id = ? AND profesional_id = ?
         """;
@@ -63,22 +63,19 @@ public class AttendanceDetailsController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                if (!rs.getBoolean("cerrado")) {
-                    if (rs.getTime("hora_entrada") == null) return "No ha ingresado";
-                    if (rs.getTime("hora_salida_almuerzo") == null) return "Presente";
-                    if (rs.getTime("hora_regreso_almuerzo") == null) return "En almuerzo";
-                    if (rs.getTime("hora_salida_final") == null) return "Regresó";
-                    return "Finalizó";
-                } else {
-                    return "Cerrado";
-                }
+                if (rs.getInt("estado") == 0) return "Cerrado";
+                if (rs.getTime("hora_entrada") == null) return "No ha ingresado";
+                if (rs.getTime("hora_salida_almuerzo") == null) return "Presente";
+                if (rs.getTime("hora_regreso_almuerzo") == null) return "En almuerzo";
+                if (rs.getTime("hora_salida_final") == null) return "Regresó";
+                return "Finalizó";
             } else {
                 return "Sin registro";
             }
         }
     }
 
-    // Método auxiliar para registrar una hora específica
+    // Registrar una hora específica
     public void registrarHora(int eventId, int professionalId, String campo, LocalTime hora) throws SQLException {
         String sql = "UPDATE asistencia_detalle SET " + campo + " = ? WHERE evento_asistencia_id = ? AND profesional_id = ?";
 
@@ -92,10 +89,10 @@ public class AttendanceDetailsController {
         }
     }
 
-    // Método para cerrar el detalle de asistencia de un profesional
+    // Marcar como cerrada (estado = 0)
     public void cerrarAsistencia(int eventId, int professionalId) throws SQLException {
         String sql = """
-            UPDATE asistencia_detalle SET cerrado = 1
+            UPDATE asistencia_detalle SET estado = 0
             WHERE evento_asistencia_id = ? AND profesional_id = ?
         """;
 
@@ -108,17 +105,18 @@ public class AttendanceDetailsController {
         }
     }
 
+    // Estado general del doctor para la capacitación actual
     public String getEstadoGeneralDelDoctor(int trainingId, String cedula) throws SQLException {
         String sql = """
         SELECT ad.hora_entrada, ad.hora_salida_almuerzo, ad.hora_regreso_almuerzo,
-               ad.hora_salida_final, ad.cerrado
+               ad.hora_salida_final, ad.estado
         FROM asistencia_detalle ad
         JOIN evento_asistencia ea ON ad.evento_asistencia_id = ea.id
         JOIN profesional p ON p.id = ad.profesional_id
         WHERE ea.capacitacion_id = ?
           AND ea.fecha = CURRENT_DATE
           AND p.cedula = ?
-    """;
+        """;
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -128,7 +126,7 @@ public class AttendanceDetailsController {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                if (rs.getBoolean("cerrado")) return "Cerrado";
+                if (rs.getInt("estado") == 0) return "Cerrado";
                 if (rs.getTime("hora_entrada") == null) return "No ha ingresado";
                 if (rs.getTime("hora_salida_almuerzo") == null) return "Presente";
                 if (rs.getTime("hora_regreso_almuerzo") == null) return "En almuerzo";
@@ -139,5 +137,4 @@ public class AttendanceDetailsController {
 
         return "Sin registro";
     }
-
 }

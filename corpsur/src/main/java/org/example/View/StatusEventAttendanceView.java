@@ -12,10 +12,10 @@ import javafx.util.Callback;
 
 public class StatusEventAttendanceView {
 
-    public static void show(String nombreCapacitacion, String fecha, boolean activar, Callback<Boolean, Void> callback) {
+    public static void show(String nombreCapacitacion, String fecha, boolean nuevoEstadoActivo, Callback<Boolean, Void> callback) {
         Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle(activar ? "Confirmar Cierre" : "Confirmar Apertura");
+        dialog.setTitle(nuevoEstadoActivo ? "Confirmar Apertura" : "Confirmar Cierre");
 
         StackPane root = new StackPane();
         root.setStyle("-fx-background-color: #1e293b; -fx-background-radius: 12;");
@@ -24,18 +24,18 @@ public class StatusEventAttendanceView {
         VBox content = new VBox(20);
         content.setAlignment(Pos.CENTER);
 
-        String mensajeTexto = activar
-                ? "¿Deseas cerrar la asistencia del " + fecha + " para la capacitación \"" + nombreCapacitacion + "\"?"
-                : "¿Deseas volver a abrir la asistencia del " + fecha + " para la capacitación \"" + nombreCapacitacion + "\"?";
+        String mensajeTexto = nuevoEstadoActivo
+                ? "¿Deseas volver a abrir la asistencia del " + fecha + " para la capacitación \"" + nombreCapacitacion + "\"?"
+                : "¿Deseas cerrar la asistencia del " + fecha + " para la capacitación \"" + nombreCapacitacion + "\"?";
 
         Label mensaje = new Label(mensajeTexto);
         mensaje.setStyle("-fx-text-fill: white; -fx-font-size: 14px;");
         mensaje.setWrapText(true);
         mensaje.setAlignment(Pos.CENTER);
 
-        Button btnAceptar = new Button(activar ? "Cerrar Asistencia" : "Abrir Asistencia");
+        Button btnAceptar = new Button(nuevoEstadoActivo ? "Abrir Asistencia" : "Cerrar Asistencia");
         btnAceptar.setStyle(
-                activar
+                nuevoEstadoActivo
                         ? "-fx-background-color: #10b981; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 20;"
                         : "-fx-background-color: #ef4444; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 20;"
         );

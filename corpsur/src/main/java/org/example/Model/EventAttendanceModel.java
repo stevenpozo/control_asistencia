@@ -4,7 +4,7 @@ public class EventAttendanceModel {
     private int id;
     private int capacitacionId;
     private String fecha;
-    private boolean cerrado;
+    private boolean activo; // ahora refleja la columna "estado"
 
     // Campos auxiliares para visualización
     private String codigoCapacitacion;
@@ -35,12 +35,14 @@ public class EventAttendanceModel {
         this.fecha = fecha;
     }
 
-    public boolean isCerrado() {
-        return cerrado;
+    // Devuelve true si el evento está activo (estado = 1)
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setCerrado(boolean dbValue) {
-        this.cerrado = !dbValue; // 👈 INVERTIR porque 1 = ABIERTO
+    // El valor de la BD es 1 = activo, 0 = inactivo
+    public void setEstado(int dbValue) {
+        this.activo = (dbValue == 1);
     }
 
     public String getCodigoCapacitacion() {

@@ -82,7 +82,7 @@ CREATE TABLE evento_asistencia (
   id INT AUTO_INCREMENT PRIMARY KEY,
   capacitacion_id INT NOT NULL,
   fecha DATE NOT NULL,
-  cerrado TINYINT DEFAULT 0,
+  estado TINYINT DEFAULT 0,
   UNIQUE (capacitacion_id, fecha),
   FOREIGN KEY (capacitacion_id) REFERENCES capacitacion(id)
 );
@@ -96,7 +96,7 @@ CREATE TABLE asistencia_detalle (
   hora_salida_almuerzo TIME DEFAULT NULL,
   hora_regreso_almuerzo TIME DEFAULT NULL,
   hora_salida_final TIME DEFAULT NULL,
-  cerrado TINYINT DEFAULT 0,
+  estado TINYINT DEFAULT 1,
   UNIQUE (evento_asistencia_id, profesional_id),
   FOREIGN KEY (evento_asistencia_id) REFERENCES evento_asistencia(id),
   FOREIGN KEY (profesional_id) REFERENCES profesional(id)

@@ -49,7 +49,7 @@ public class AddEventAttendanceView {
         calendarPicker.setPrefHeight(320);
         calendarPicker.setStyle("-fx-background-color: silver; -fx-border-radius: 8;");
 
-        LocalDate[] rango = new LocalDate[2]; // fecha_inicio y fecha_fin
+        LocalDate[] rango = new LocalDate[2];
 
         try {
             List<String[]> caps = new EventAttendanceController().getActiveCapacitationsWithDateRange();
@@ -79,10 +79,9 @@ public class AddEventAttendanceView {
             if (selected != null) {
                 rango[0] = LocalDate.parse(selected[3]);
                 rango[1] = LocalDate.parse(selected[4]);
-
                 fechaRangoLabel.setText("Asistencia válida del " + rango[0] + " al " + rango[1]);
-                calendarPicker.setDisplayedCalendar(Calendar.getInstance()); // reset visual
-                calendarPicker.calendars().clear(); // limpia selección previa
+                calendarPicker.setDisplayedCalendar(Calendar.getInstance());
+                calendarPicker.calendars().clear();
             }
         });
 

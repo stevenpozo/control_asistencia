@@ -49,7 +49,7 @@ public class DashboardView {
         menu.setPadding(new Insets(30, 0, 30, 20));
 
         menu.getChildren().addAll(
-                createSidebarButton("Dashboard", FontAwesome.HOME, () -> content.getChildren().setAll(new Label("Welcome to Dashboard!"))),
+                createSidebarButton("Control de asistencias", FontAwesome.HOME, () -> content.getChildren().setAll(new AttendanceControlView().getView())),
                 createSidebarButton("Profesionales", FontAwesome.USER_PLUS, () -> content.getChildren().setAll(new ProfessionalView().getView())),
                 createSidebarButton("Laboratorios", FontAwesome.FLASK, () -> content.getChildren().setAll(new LaboratoryView().getView())),
                 createSidebarButton("Profesiones", FontAwesome.GRADUATION_CAP, () -> content.getChildren().setAll(new ProfessionsView().getView())),

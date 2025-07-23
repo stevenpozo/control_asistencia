@@ -115,7 +115,7 @@ public class EventAttendanceView {
 
         TableColumn<EventAttendanceModel, String> colEstado = new TableColumn<>("Estado");
         colEstado.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleStringProperty(data.getValue().isCerrado() ? "Cerrado" : "Abierto"));
+                new javafx.beans.property.SimpleStringProperty(data.getValue().isActivo() ? "Activo" : "Inactivo"));
 
         TableColumn<EventAttendanceModel, Void> colAcciones = new TableColumn<>("Acciones");
         colAcciones.setCellFactory(param -> new TableCell<>() {
@@ -128,7 +128,6 @@ public class EventAttendanceView {
                     EventAttendanceModel event = getTableView().getItems().get(getIndex());
                     showStatusConfirmation(event);
                 });
-
                 actionBox.getChildren().add(switchIcon);
                 actionBox.setAlignment(Pos.CENTER);
             }
@@ -140,12 +139,12 @@ public class EventAttendanceView {
                     setGraphic(null);
                 } else {
                     EventAttendanceModel event = getTableView().getItems().get(getIndex());
-                    if (event.isCerrado()) {
-                        switchIcon.setIconLiteral("fa-toggle-off");
-                        switchIcon.setIconColor(Color.web("#f87171"));
-                    } else {
+                    if (event.isActivo()) {
                         switchIcon.setIconLiteral("fa-toggle-on");
                         switchIcon.setIconColor(Color.web("#4ade80"));
+                    } else {
+                        switchIcon.setIconLiteral("fa-toggle-off");
+                        switchIcon.setIconColor(Color.web("#f87171"));
                     }
                     setGraphic(actionBox);
                 }
@@ -201,11 +200,11 @@ public class EventAttendanceView {
     }
 
     private void showStatusConfirmation(EventAttendanceModel event) {
-        boolean nuevoEstado = !event.isCerrado();
+        boolean nuevoEstado = !event.isActivo();
         StatusEventAttendanceView.show(
                 event.getNombreCapacitacion(),
                 event.getFecha(),
-                nuevoEstado,
+                !nuevoEstado, // al hacer clic, se quiere cerrar si estaba abierto
                 confirmed -> {
                     if (confirmed) {
                         try {
@@ -216,7 +215,7 @@ public class EventAttendanceView {
                             if (updated) {
                                 ToastUtil.showToastTopRight(
                                         rootStackPane,
-                                        nuevoEstado ? "✔ Asistencia abierta" : "✔ Asistencia cerrada",
+                                        nuevoEstado ? "✔ Asistencia activada" : "✔ Asistencia desactivada",
                                         true
                                 );
                                 refreshTable();
